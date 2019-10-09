@@ -1,9 +1,11 @@
 
-var mainData
+var mainData;
+var promises = [];
 function init() {
-  d3.csv("/state-candy.csv").then(function (fullData) {
-    mainData = fullData;
-    mainData.forEach(function (d) {
+  promises.push(d3.csv("state-candy.csv"));
+  Promise.all(promises).then(function (fullData) {
+    mainData = fullData[0];
+    mainData.forEach(d => {
       d["Top Candy pounds"] = +d["Top Candy pounds"];
       console.log(d["Top Candy pounds"]);
       d["2nd Candy pounds"] = +d["2nd Candy pounds"];
@@ -17,9 +19,10 @@ function init() {
 
     // Initializes the page with a default plot
     var trace1 = {
-      x: mainData["State"],
-      y: mainData["Top Candy pounds"],
-      type: "scatter"
+      x: GetArrayFromMainData("State"),
+      y: GetArrayFromMainData("Top Candy pounds"),
+      type: "scatter",
+      mode: "markers"
     };
     var data = [trace1];
     Plotly.newPlot("plot", data);
@@ -35,28 +38,38 @@ function updatePlotly() {
   var dropdownMenu = d3.select("#selDataset");
   // Assign the value of the dropdown menu option to a variable
   var dataset = dropdownMenu.property("value");
+  console.log(dataset);
 
   // Initialize x and y arrays
-  var x = [];
+  //var x = [];
   var y = [];
 
-  if (dataset === 'dataset1') {
-    x = mainData["State"];
-    y = mainData["Top Candy pounds"];
+  if (dataset == 'dataset1') {
+    //x = GetArrayFromMainData("State");
+    y = GetArrayFromMainData("Top Candy pounds");
   }
 
-  if (dataset === 'dataset2') {
-    x = mainData["State"];
-    y = mainData["2nd Candy pounds"];
+  if (dataset == 'dataset2') {
+    //x = GetArrayFromMainData("State");
+    y = GetArrayFromMainData("2nd Place pounds");
   }
 
-  if (dataset === 'dataset3') {
-    x = mainData["State"];
-    y = mainData["3rd Candy pounds"];
+  if (dataset == 'dataset3') {
+    //x = GetArrayFromMainData("State");
+    y = GetArrayFromMainData("3rd Place pounds");
   }
   // Note the extra brackets around 'x' and 'y'
-  Plotly.restyle("plot", "x", [x]);
-  Plotly.restyle("plot", "y", [y]);
+  //Plotly.restyle("plot", "x", [x]);
+  var update = { y: [y] };
+  Plotly.restyle("plot", update);
 }
+
+function GetArrayFromMainData(field) {
+  var arr = [];
+  mainData.forEach(d => {
+    arr.push(d[field]);
+  });
+  return arr;
+};
 
 init();
