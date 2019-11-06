@@ -3,3 +3,5 @@ In this Project we looked at the top 100 horror movies, top 3 candy sales for ea
 We used scatter plots, bar charts, and chloropleth maps to vizualise data.
 
 ![candy](candy.PNG)
+
+![page](HW.PNG)
