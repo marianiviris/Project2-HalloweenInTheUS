@@ -5,3 +5,5 @@ We used scatter plots, bar charts, and chloropleth maps to vizualise data.
 ![candy](candy.PNG)
 
 ![page](HW.PNG)
+
+![page2](HW2.PNG)
