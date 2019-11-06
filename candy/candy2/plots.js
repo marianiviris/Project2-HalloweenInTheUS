@@ -12,7 +12,8 @@ function init() {
       d["3rd Candy pounds"] = +d["3rd Candy pounds"];
       //The next four don't change anything so are redundant.
       //mainData["State"] = mainData["State"];
-      //mainData["Top Candy"] = mainData["Top Candy"];
+      d["Top Candy"] = d["Top Candy"];
+      console.log(d["Top Candy"]);
       //mainData["2nd Place"] = mainData["2nd Place"];
       //mainData["3rd Place"] = mainData["3rd Place"];
     });
@@ -20,12 +21,19 @@ function init() {
     // Initializes the page with a default plot
     var trace1 = {
       x: GetArrayFromMainData("State"),
+      //x: GetArrayFromMainData("Top Candy"),
       y: GetArrayFromMainData("Top Candy pounds"),
       type: "scatter",
-      mode: "markers"
+      mode: "markers",
+      text: GetArrayFromMainData("Top Candy"),
+     // hovertemplate:
+     // "<b>{(Top Candy)}</b><br><br>",
+      marker: { size: 15,color: "darkorange"},
     };
     var data = [trace1];
-    Plotly.newPlot("plot", data);
+
+    var layout = { hovermode: "closest"};
+    Plotly.newPlot("plot", data, layout);
   });
 };
 
@@ -47,20 +55,23 @@ function updatePlotly() {
   if (dataset == 'dataset1') {
     //x = GetArrayFromMainData("State");
     y = GetArrayFromMainData("Top Candy pounds");
+    text =GetArrayFromMainData("Top Candy");
   }
 
   if (dataset == 'dataset2') {
     //x = GetArrayFromMainData("State");
     y = GetArrayFromMainData("2nd Place pounds");
+    text= GetArrayFromMainData("2nd Place");
   }
 
   if (dataset == 'dataset3') {
     //x = GetArrayFromMainData("State");
     y = GetArrayFromMainData("3rd Place pounds");
+    text= GetArrayFromMainData("3rd Place");
   }
   // Note the extra brackets around 'x' and 'y'
   //Plotly.restyle("plot", "x", [x]);
-  var update = { y: [y] };
+  var update = { y: [y], text:[text] };
   Plotly.restyle("plot", update);
 }
 
